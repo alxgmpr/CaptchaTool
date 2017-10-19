@@ -1,0 +1,10 @@
+{
+  "name": "Captcha",
+  "version": "0.0.1",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^1.8.1",
+    "jQuery": "^1.7.4",
+    "jquery": "^1.12.4"
+  }
+}
