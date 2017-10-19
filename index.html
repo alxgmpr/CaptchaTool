@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Captcha Harvester</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+</head>
+<body>
+<h1>Captchas will appear here to be solved</h1>
+
+<div id="test">Sitekey</div>
+
+<form>
+    <fieldset id="set"></fieldset>
+</form>
+
+<webview id="webview" preload="./renderer.js" src="http://checkout.shopify.com" style="position:absolute;width:100%;height:100%;" nodeintegration="true"></webview>
+<script>
+
+</script>
+
+<button id="testbutton">Test</button>
+
+<script>
+    const ipc = require('electron').ipcRenderer;
+
+    const testField = document.getElementById('test');
+
+    ipc.on('captchaNeeded', function(event, data) {
+        let sitekey = data['sitekey'];
+        let host = data['host'];
+        let proxy = data['proxy'];
+
+        testField.innerHTML = sitekey;
+        $('webview').focus();
+        $('webview').selectAll();
+        document.querySelector('webview').executeJavaScript(doCap());
+
+        $('fieldset').append('<div id="recaptcha" class="g-recaptcha" data-sitekey="' + sitekey + '" data-callback="sub"></div>');
+        $.getScript("https://www.google.com/recaptcha/api.js", function () {});
+
+    });
+
+    function sub() {
+        // do stuff after captcha is solved
+        testField.innerHTML += 'sub sub subs'
+    }
+
+</script>
+
+</body>
+</html>
